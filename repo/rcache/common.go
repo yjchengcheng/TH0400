@@ -56,7 +56,7 @@ func MAP(key string, value interface{}) error {
 	return nil
 }
 
-// GAU get and unmarshal
+// GAU get and unmarshal 从缓存中获取并反序列化
 func GAU(key string, value interface{}) error {
 
 	ctx, r := utils.GetRTimeoutCtx()
