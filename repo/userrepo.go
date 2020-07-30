@@ -55,6 +55,24 @@ func (u *UserRepo) GetUser() (*UserRepo, error) {
 	return nil, err
 }
 
+//GetUserByID 获取公共用户信息
+func (u *UserRepo) GetUserByID() (*UserRepo, error) {
+	ctx, f := utils.GetTimeoutCtx()
+	defer f()
+
+	if u.ID != 0 {
+		ur, err := edb.User.
+			Query().
+			Where(user.IDEQ(u.ID)).
+			Only(ctx)
+		return (*UserRepo)(ur), err
+	}
+
+	err := fmt.Errorf("show me ID")
+
+	return nil, err
+}
+
 // UpdateUser ...
 func (u *UserRepo) UpdateUser() error {
 	ctx, f := utils.GetTimeoutCtx()

@@ -42,7 +42,7 @@ func GenerateToken(id int, username string, password string) (string, error) {
 }
 
 //ParseToken ...通过token获取用户id和用户名
-func ParseToken(token string) (*Claims, error) {
+func ParseToken(token string) (int, error) {
 
 	//用于解析鉴权的声明，方法内部主要是具体的解码和校验的过程，最终返回*Token
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
@@ -53,9 +53,10 @@ func ParseToken(token string) (*Claims, error) {
 		// 从tokenClaims中获取到Claims对象，并使用断言，将该对象转换为我们自己定义的Claims
 		// 要传入指针，项目中结构体都是用指针传递，节省空间。
 		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
-			return claims, nil
+
+			return claims.ID, nil
 		}
 	}
-	return nil, err
+	return -1, err
 
 }

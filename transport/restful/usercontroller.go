@@ -46,6 +46,46 @@ func get(c *gin.Context) {
 	return
 }
 
+func getuserpublicinfo(c *gin.Context) {
+	var userget service.UserGetByID
+
+	if err := c.ShouldBind(&userget); err != nil {
+		ErrAndInfo(c, errors.BadRequestErr)
+		logger.Error(err)
+		return
+	}
+
+	res, err := userget.GetUserPublicInfo()
+
+	if err != nil {
+		ErrAndInfo(c, errors.InternalErr)
+		logger.Error(err)
+	}
+
+	OkAndData(c, res)
+	return
+}
+
+func getuserprivateinfo(c *gin.Context) {
+	var userget service.UserGetByID
+
+	if err := c.ShouldBind(&userget); err != nil {
+		ErrAndInfo(c, errors.BadRequestErr)
+		logger.Error(err)
+		return
+	}
+
+	res, err := userget.GetUserPrivateInfo()
+
+	if err != nil {
+		ErrAndInfo(c, errors.InternalErr)
+		logger.Error(err)
+	}
+
+	OkAndData(c, res)
+	return
+}
+
 func update(c *gin.Context) {
 	var userupdate service.UserUpdate
 
