@@ -57,7 +57,7 @@ func (u *UserRepo) GetUser() (*UserRepo, error) {
 
 //GetUserByID 获取公共用户信息
 func (u *UserRepo) GetUserByID() (*UserRepo, error) {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if u.ID != 0 {

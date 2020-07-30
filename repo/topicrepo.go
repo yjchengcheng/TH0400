@@ -12,7 +12,7 @@ type Topicrepo ent.Topic
 
 //GetTopicsByUserID 获取topics
 func (t *Topicrepo) GetTopicsByUserID() ([]*ent.Topic, error) {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if t.CreaterID != 0 {
@@ -30,7 +30,7 @@ func (t *Topicrepo) GetTopicsByUserID() ([]*ent.Topic, error) {
 
 //GetTopicByTopicID 获取一个话题通过话题ID
 func (t *Topicrepo) GetTopicByTopicID() (*Topicrepo, error) {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if t.ID != 0 {

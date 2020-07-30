@@ -15,7 +15,7 @@ var tagnames []*ent.Tag
 
 //GetTags 获取tags
 func (tt *TagTopicRepo) GetTags() ([]*ent.Tag, error) {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if tt.TopicID != 0 {
