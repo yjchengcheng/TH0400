@@ -13,7 +13,7 @@ type UserRepo ent.User
 
 // CreateUser ...
 func (u *UserRepo) CreateUser() (uid int, err error) {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	ur, err := edb.User.
@@ -32,7 +32,7 @@ func (u *UserRepo) CreateUser() (uid int, err error) {
 
 // GetUser ...
 func (u *UserRepo) GetUser() (*UserRepo, error) {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if u.ID != 0 {
@@ -57,7 +57,7 @@ func (u *UserRepo) GetUser() (*UserRepo, error) {
 
 // UpdateUser ...
 func (u *UserRepo) UpdateUser() error {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if u.ID != 0 {
@@ -78,7 +78,7 @@ func (u *UserRepo) UpdateUser() error {
 
 // DeleteUser ...
 func (u *UserRepo) DeleteUser() error {
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if u.ID != 0 {

@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"strings"
+
 	"go.uber.org/zap"
 )
 
@@ -69,4 +71,19 @@ func Errorf(template string, args ...interface{}) {
 // Errorw ...
 func Errorw(msg string, keysAndValues ...interface{}) {
 	logger.Errorw(msg, keysAndValues...)
+}
+
+// XInfof 按 elems = [modName, content, logType, message] 格式传入
+func XInfof(elems []string, args ...interface{}) {
+	logger.Infof(strings.Join(elems, "; "), args...)
+}
+
+// XErrorf 按 elems = [modName, content, logType, message] 格式传入
+func XErrorf(elems []string, args ...interface{}) {
+	logger.Errorf(strings.Join(elems, ";"), args...)
+}
+
+// XDebugf 按 elems = [modName, content, logType, message] 格式传入
+func XDebugf(elems []string, args ...interface{}) {
+	logger.Debugf(strings.Join(elems, ";"), args...)
 }
