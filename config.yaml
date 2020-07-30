@@ -1,0 +1,8 @@
+loglevel: debug
+db:
+  uri: root:development@tcp(localhost:3306)/test
+  conntimeout: 5
+redis:
+  uri: redis://localhost:6479/1
+  conntimeout: 5
+  expiration: 3600

@@ -6,25 +6,28 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
-	"time"
 )
 
-// GetCacheTimeout 获取缓存过期时间
-func GetCacheTimeout() time.Duration {
-	// todo
-	// 防止缓存雪崩 缓存过期时间应该有一定的随机性
-
-	return time.Hour
+// GetMTimeoutCtx 获取mysql连接 Timeout context
+func GetMTimeoutCtx() (context.Context, context.CancelFunc) {
+	return context.WithTimeout(context.Background(), GetMysqlTimeout())
 }
 
-// GetTimeoutCtx 读取配置文件的超时配置并返回context
-func GetTimeoutCtx() (context.Context, context.CancelFunc) {
-	return context.WithTimeout(context.Background(), time.Second*10) // todo 读取配置文件
+// GetRTimeoutCtx 获取redis连接 Timeout context
+func GetRTimeoutCtx() (context.Context, context.CancelFunc) {
+	return context.WithTimeout(context.Background(), GetRedisTimeout())
 }
 
 // MRE marshal or error 序列化或者返回错误
 func MRE(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
+}
+
+// URE unmarshal or error 反序列化或返回错误
+//
+// 注意 v 必须是指针类型
+func URE(data []byte, v interface{}) error {
+	return json.Unmarshal(data, v)
 }
 
 // EncodePassword 密码加密

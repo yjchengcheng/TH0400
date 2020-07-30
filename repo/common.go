@@ -11,12 +11,12 @@ var edb *ent.Client
 
 // 初始化数据库连接
 func init() {
-	client, err := ent.Open("mysql", "root:962464@tcp(localhost:3306)/test")
+	client, err := ent.Open("mysql", utils.GetSQLURI())
 	if err != nil {
 		log.Fatal("connect mysql err:", err.Error())
 	}
 
-	ctx, f := utils.GetTimeoutCtx()
+	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
 	if err := client.Schema.Create(ctx); err != nil {

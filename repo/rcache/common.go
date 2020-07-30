@@ -1,6 +1,7 @@
 package rcache
 
 import (
+	"TH0400/logger"
 	"TH0400/utils"
 	"log"
 	"sync"
@@ -19,15 +20,16 @@ func init() {
 
 	// ------redis---------
 	if rdb == nil {
-		opt, err := redis.ParseURL("redis://localhost:6479/1") // todo 配置文件
+		opt, err := redis.ParseURL(utils.GetRedisURI())
 		if err != nil {
 			panic(err)
 		}
 
 		rdb = redis.NewClient(opt)
 
-		ctx, f := utils.GetTimeoutCtx()
+		ctx, f := utils.GetRTimeoutCtx()
 		defer f()
+
 		if rdb.Ping(ctx).Err() != nil {
 			log.Fatalf("ping redis failed: %s", err.Error())
 		}
@@ -35,17 +37,43 @@ func init() {
 
 }
 
-// MAC marshal and cache 序列化后放入缓存
-func MAC(key string, value interface{}) error {
+// MAP marshal and put 序列化后放入缓存
+func MAP(key string, value interface{}) error {
 	data, err := utils.MRE(value)
 	if err != nil {
+		logger.Errorf("redis; key: [%s], value: [xxx]; marshal error; %s", key, err.Error())
 		return err
 	}
 
-	ctx, r := utils.GetTimeoutCtx()
+	ctx, r := utils.GetRTimeoutCtx()
 	defer r()
 
-	if _, err := rdb.Set(ctx, key, data, utils.GetCacheTimeout()).Result(); err != nil {
+	if _, err := rdb.Set(ctx, key, data, utils.GetRedisExpiration()).Result(); err != nil {
+		logger.Errorf("redis; key: [%s], value: [xxx]; set error; %s", key, err.Error())
+		return err
+	}
+
+	return nil
+}
+
+// GAU get and unmarshal 从缓存中获取并反序列化
+func GAU(key string, value interface{}) error {
+
+	ctx, r := utils.GetRTimeoutCtx()
+	defer r()
+
+	data, err := rdb.Get(ctx, key).Result()
+	if err != nil {
+		if err == redis.Nil {
+			logger.Infof("redis; key: [%s] ,value: [xxx]; not exist", key)
+			return err
+		}
+		logger.Errorf("redis; key: [%s], value: [xxx]; get error; %s", key, err.Error())
+		return err
+	}
+
+	if err := utils.URE([]byte(data), value); err != nil {
+		logger.Errorf("redis; key: [%s], value: [xxx]; unmarshal error; %s", key, err.Error())
 		return err
 	}
 
