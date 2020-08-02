@@ -55,60 +55,33 @@ func (u *UserRepo) GetUser() (*UserRepo, error) {
 	return nil, err
 }
 
-//GetUserByID 获取公共用户信息
-func (u *UserRepo) GetUserByID() (*UserRepo, error) {
+// GetPassword ...
+func (u *UserRepo) GetPassword() (id int, pass string, err error) {
 	ctx, f := utils.GetMTimeoutCtx()
 	defer f()
 
-	if u.ID != 0 {
-		ur, err := edb.User.
-			Query().
-			Where(user.IDEQ(u.ID)).
-			Only(ctx)
-		return (*UserRepo)(ur), err
+	var password struct {
+		ID       int    `json:"id"`
+		Password string `json:"password"`
 	}
 
-	err := fmt.Errorf("show me ID")
-
-	return nil, err
-}
-
-// UpdateUser ...
-func (u *UserRepo) UpdateUser() error {
-	ctx, f := utils.GetMTimeoutCtx()
-	defer f()
-
-	if u.ID != 0 {
-		_, err := edb.User.
-			UpdateOneID(u.ID).
-			SetUserName(u.UserName).
-			SetPassword(u.Password).
-			SetSchool(u.School).
-			Save(ctx)
-		if err != nil {
-			logger.Errorf("update user failed: %s", err.Error)
-			return err
-		}
-	}
-	err := fmt.Errorf("ID not found")
-	return err
-}
-
-// DeleteUser ...
-func (u *UserRepo) DeleteUser() error {
-	ctx, f := utils.GetMTimeoutCtx()
-	defer f()
-
-	if u.ID != 0 {
-		err := edb.User.
-			DeleteOneID(u.ID).
-			Exec(ctx)
-		if err != nil {
-			logger.Errorf("delete user failed: %s", err.Error)
-			return err
+	err = edb.User.
+		Query().
+		Where(user.UserNameEQ(u.UserName)).
+		Select(user.FieldPassword, user.FieldID).
+		Scan(ctx, &password)
+	if err != nil {
+		switch err.(type) {
+		case *ent.NotFoundError:
+			err = fmt.Errorf("Not found")
+			return
+		default:
+			return
 		}
 	}
 
-	err := fmt.Errorf("no User ID detected")
-	return err
+	id = password.ID
+	pass = password.Password
+
+	return
 }

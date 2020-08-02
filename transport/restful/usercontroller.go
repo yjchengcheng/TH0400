@@ -9,7 +9,7 @@ import (
 )
 
 func register(c *gin.Context) {
-	var userRegister service.UserRegister
+	var userRegister service.UserService
 
 	if err := c.ShouldBindJSON(&userRegister); err != nil {
 		ErrAndInfo(c, errors.BadRequestErr)
@@ -28,26 +28,8 @@ func register(c *gin.Context) {
 	return
 }
 
-func get(c *gin.Context) {
-	var userget service.UserGet
-
-	if err := c.ShouldBind(&userget); err != nil {
-		ErrAndInfo(c, errors.BadRequestErr)
-		logger.Error(err)
-		return
-	}
-
-	if err := userget.Get(); err != nil {
-		ErrAndInfo(c, errors.InternalErr)
-		logger.Error(err)
-	}
-
-	OkButNoData(c)
-	return
-}
-
 func getuserpublicinfo(c *gin.Context) {
-	var userget service.UserGetByID
+	var userget service.UserService
 
 	if err := c.ShouldBind(&userget); err != nil {
 		ErrAndInfo(c, errors.BadRequestErr)
@@ -67,7 +49,7 @@ func getuserpublicinfo(c *gin.Context) {
 }
 
 func getuserprivateinfo(c *gin.Context) {
-	var userget service.UserGetByID
+	var userget service.UserService
 
 	if err := c.ShouldBind(&userget); err != nil {
 		ErrAndInfo(c, errors.BadRequestErr)
@@ -83,41 +65,5 @@ func getuserprivateinfo(c *gin.Context) {
 	}
 
 	OkAndData(c, res)
-	return
-}
-
-func update(c *gin.Context) {
-	var userupdate service.UserUpdate
-
-	if err := c.ShouldBind(&userupdate); err != nil {
-		ErrAndInfo(c, errors.BadRequestErr)
-		logger.Error(err)
-		return
-	}
-
-	if err := userupdate.Update(); err != nil {
-		ErrAndInfo(c, errors.InternalErr)
-		logger.Error(err)
-	}
-
-	OkButNoData(c)
-	return
-}
-
-func delete(c *gin.Context) {
-	var userDelete service.UserDelete
-
-	if err := c.ShouldBind(&userDelete); err != nil {
-		ErrAndInfo(c, errors.BadRequestErr)
-		logger.Error(err)
-		return
-	}
-
-	if err := userDelete.Delete(); err != nil {
-		ErrAndInfo(c, errors.InternalErr)
-		logger.Error(err)
-	}
-
-	OkButNoData(c)
 	return
 }

@@ -172,19 +172,9 @@ func (uc *UserCreate) Save(ctx context.Context) (*User, error) {
 		v := user.DefaultLikes
 		uc.mutation.SetLikes(v)
 	}
-	if v, ok := uc.mutation.Likes(); ok {
-		if err := user.LikesValidator(v); err != nil {
-			return nil, &ValidationError{Name: "likes", err: fmt.Errorf("ent: validator failed for field \"likes\": %w", err)}
-		}
-	}
 	if _, ok := uc.mutation.Views(); !ok {
 		v := user.DefaultViews
 		uc.mutation.SetViews(v)
-	}
-	if v, ok := uc.mutation.Views(); ok {
-		if err := user.ViewsValidator(v); err != nil {
-			return nil, &ValidationError{Name: "views", err: fmt.Errorf("ent: validator failed for field \"views\": %w", err)}
-		}
 	}
 	if _, ok := uc.mutation.CreatedAt(); !ok {
 		v := user.DefaultCreatedAt()

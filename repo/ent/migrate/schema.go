@@ -74,7 +74,7 @@ var (
 		{Name: "user_name", Type: field.TypeString, Unique: true, Size: 255},
 		{Name: "password", Type: field.TypeString},
 		{Name: "school", Type: field.TypeString, Nullable: true},
-		{Name: "level", Type: field.TypeInt},
+		{Name: "level", Type: field.TypeInt, Default: 1},
 		{Name: "likes", Type: field.TypeInt},
 		{Name: "views", Type: field.TypeInt},
 		{Name: "created_at", Type: field.TypeTime},

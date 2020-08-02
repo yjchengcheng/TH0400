@@ -14,12 +14,12 @@ var (
 )
 
 func init() {
+
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("TH0400")
-
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("/home/zhanlan/projects/goProjects/TH0400")
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
@@ -29,7 +29,7 @@ func init() {
 		}
 	}
 
-	mysqlConnTimeout = time.Second * time.Duration(mustGetInt("mysql.conntimeout"))
+	mysqlConnTimeout = time.Second * time.Duration(mustGetInt("db.conntimeout"))
 	redisConnTimeout = time.Second * time.Duration(mustGetInt("redis.conntimeout"))
 	redisExpiration = time.Second * time.Duration(mustGetInt("redis.expiration"))
 }

@@ -95,14 +95,10 @@ func init() {
 	userDescLikes := userFields[5].Descriptor()
 	// user.DefaultLikes holds the default value on creation for the likes field.
 	user.DefaultLikes = userDescLikes.Default.(int)
-	// user.LikesValidator is a validator for the "likes" field. It is called by the builders before save.
-	user.LikesValidator = userDescLikes.Validators[0].(func(int) error)
 	// userDescViews is the schema descriptor for views field.
 	userDescViews := userFields[6].Descriptor()
 	// user.DefaultViews holds the default value on creation for the views field.
 	user.DefaultViews = userDescViews.Default.(int)
-	// user.ViewsValidator is a validator for the "views" field. It is called by the builders before save.
-	user.ViewsValidator = userDescViews.Validators[0].(func(int) error)
 	// userDescCreatedAt is the schema descriptor for created_at field.
 	userDescCreatedAt := userFields[7].Descriptor()
 	// user.DefaultCreatedAt holds the default value on creation for the created_at field.

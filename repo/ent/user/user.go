@@ -59,12 +59,8 @@ var (
 	LevelValidator func(int) error
 	// DefaultLikes holds the default value on creation for the likes field.
 	DefaultLikes int
-	// LikesValidator is a validator for the "likes" field. It is called by the builders before save.
-	LikesValidator func(int) error
 	// DefaultViews holds the default value on creation for the views field.
 	DefaultViews int
-	// ViewsValidator is a validator for the "views" field. It is called by the builders before save.
-	ViewsValidator func(int) error
 	// DefaultCreatedAt holds the default value on creation for the created_at field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the updated_at field.

@@ -173,16 +173,6 @@ func (uu *UserUpdate) Save(ctx context.Context) (int, error) {
 			return 0, &ValidationError{Name: "level", err: fmt.Errorf("ent: validator failed for field \"level\": %w", err)}
 		}
 	}
-	if v, ok := uu.mutation.Likes(); ok {
-		if err := user.LikesValidator(v); err != nil {
-			return 0, &ValidationError{Name: "likes", err: fmt.Errorf("ent: validator failed for field \"likes\": %w", err)}
-		}
-	}
-	if v, ok := uu.mutation.Views(); ok {
-		if err := user.ViewsValidator(v); err != nil {
-			return 0, &ValidationError{Name: "views", err: fmt.Errorf("ent: validator failed for field \"views\": %w", err)}
-		}
-	}
 	var (
 		err      error
 		affected int
@@ -494,16 +484,6 @@ func (uuo *UserUpdateOne) Save(ctx context.Context) (*User, error) {
 	if v, ok := uuo.mutation.Level(); ok {
 		if err := user.LevelValidator(v); err != nil {
 			return nil, &ValidationError{Name: "level", err: fmt.Errorf("ent: validator failed for field \"level\": %w", err)}
-		}
-	}
-	if v, ok := uuo.mutation.Likes(); ok {
-		if err := user.LikesValidator(v); err != nil {
-			return nil, &ValidationError{Name: "likes", err: fmt.Errorf("ent: validator failed for field \"likes\": %w", err)}
-		}
-	}
-	if v, ok := uuo.mutation.Views(); ok {
-		if err := user.ViewsValidator(v); err != nil {
-			return nil, &ValidationError{Name: "views", err: fmt.Errorf("ent: validator failed for field \"views\": %w", err)}
 		}
 	}
 	var (
