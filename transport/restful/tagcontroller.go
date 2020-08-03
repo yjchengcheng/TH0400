@@ -8,6 +8,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func createtag(c *gin.Context) {
+	var tagcreate service.CreateTag
+
+	if err := c.ShouldBind(&tagcreate); err != nil {
+		ErrAndInfo(c, errors.BadRequestErr)
+		logger.Error(err)
+		return
+	}
+
+	err := tagcreate.CreateTag()
+
+	if err != nil {
+		ErrAndInfo(c, errors.InternalErr)
+		logger.Error(err)
+	}
+
+	OkButNoData(c)
+	return
+}
+
 func gettags(c *gin.Context) {
 	var tagget service.GetTagsCondition
 

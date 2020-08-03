@@ -21,15 +21,41 @@ func TestRegister(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-	userregister := UserService{
+	userLogin := UserService{
 		UserName: "yjc",
 		PassWord: "123456",
 	}
 
-	resUserRegister, err := userregister.Login()
+	resLogin, err := userLogin.Login()
 	if err != nil {
 		t.Error(err.Error())
 	}
 
-	t.Log(resUserRegister)
+	t.Log(resLogin)
+}
+
+func TestGetUserPublicInfo(t *testing.T) {
+	userGetUserPublicInfo := UserService{
+		ID: 1,
+	}
+
+	resGetUserPublicInfo, err := userGetUserPublicInfo.GetUserPublicInfo()
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	t.Log(resGetUserPublicInfo)
+}
+
+func TestGetUserPrivateInfo(t *testing.T) {
+	userGetUserPrivateInfo := UserService{
+		ID: 1,
+	}
+
+	resGetUserPrivateInfo, err := userGetUserPrivateInfo.GetUserPrivateInfo()
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	t.Log(resGetUserPrivateInfo)
 }

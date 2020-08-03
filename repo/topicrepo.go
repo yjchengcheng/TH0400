@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"TH0400/logger"
 	"TH0400/repo/ent"
 	"TH0400/repo/ent/topic"
 	"TH0400/utils"
@@ -9,6 +10,28 @@ import (
 
 //Topicrepo ...
 type Topicrepo ent.Topic
+
+//CreateTopic 获取topics
+func (t *Topicrepo) CreateTopic() error {
+	ctx, f := utils.GetMTimeoutCtx()
+	defer f()
+
+	_, err := edb.Topic.
+		Create().
+		SetTitle(t.Title).
+		SetContent(t.Content).
+		SetIsReleased(t.IsReleased).
+		SetCreatedAt(t.CreatedAt).
+		SetUpdatedAt(t.UpdatedAt).
+		SetCreaterID(t.CreaterID).
+		Save(ctx)
+	if err != nil {
+		logger.Errorf("failed create user: %s", err.Error())
+		return err
+	}
+
+	return nil
+}
 
 //GetTopicsByUserID 获取topics
 func (t *Topicrepo) GetTopicsByUserID() ([]*ent.Topic, error) {

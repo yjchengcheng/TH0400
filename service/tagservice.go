@@ -3,6 +3,7 @@ package service
 import (
 	"TH0400/logger"
 	"TH0400/repo"
+	"time"
 )
 
 // GetTagsCondition ...
@@ -14,6 +15,31 @@ type GetTagsCondition struct {
 type GetTag struct {
 	TagID   int    `json:"tag_id"`
 	TagName string `json:"tag_name"`
+}
+
+// CreateTopic ...
+type CreateTag struct {
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+	Baned     bool      `json:"baned"`
+}
+
+// CreateTag ...
+func (ct *CreateTag) CreateTag() error {
+
+	etag := repo.TagRepo{
+		TagName:   ct.Name,
+		CreatedAt: ct.CreatedAt,
+		Baned:     ct.Baned,
+	}
+
+	err := etag.CreateTag()
+	if err != nil {
+		logger.Errorf("not found Tag: %s", err.Error())
+		return err
+	}
+
+	return nil
 }
 
 // GetTags ...
@@ -30,8 +56,10 @@ func (ts *GetTagsCondition) GetTags() (gettags []*GetTag, err error) {
 	}
 
 	for i := 0; i < len(tr); i++ {
-		gettags[i].TagID = tr[i].ID
-		gettags[i].TagName = tr[i].TagName
+		tag := new(GetTag)
+		tag.TagID = tr[i].ID
+		tag.TagName = tr[i].TagName
+		gettags = append(gettags, tag)
 
 	}
 
