@@ -1,22 +1,11 @@
 package utils
 
 import (
-	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
 )
-
-// GetMTimeoutCtx 获取mysql连接 Timeout context
-func GetMTimeoutCtx() (context.Context, context.CancelFunc) {
-	return context.WithTimeout(context.Background(), GetMysqlTimeout())
-}
-
-// GetRTimeoutCtx 获取redis连接 Timeout context
-func GetRTimeoutCtx() (context.Context, context.CancelFunc) {
-	return context.WithTimeout(context.Background(), GetRedisTimeout())
-}
 
 // MRE marshal or error 序列化或者返回错误
 func MRE(v interface{}) ([]byte, error) {
